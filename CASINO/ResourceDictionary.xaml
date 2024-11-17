@@ -1,0 +1,15 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <SolidColorBrush x:Key="BackgroundBrush" Color="#FFFFFF" />
+    <!--  Белый фон  -->
+    <SolidColorBrush x:Key="ControlBackgroundBrush" Color="#F0F0F0" />
+    <!--  Фон для элементов управления  -->
+    <SolidColorBrush x:Key="PrimaryBrush" Color="#4CAF50" />
+    <!--  Основной цвет (зеленый)  -->
+    <SolidColorBrush x:Key="SecondaryBrush" Color="#2196F3" />
+    <!--  Второстепенный цвет (синий)  -->
+    <SolidColorBrush x:Key="TextPrimaryBrush" Color="#333333" />
+    <!--  Цвет текста (темно-серый)  -->
+
+
+</ResourceDictionary>

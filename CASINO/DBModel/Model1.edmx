@@ -1,0 +1,585 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище CASINOModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Bonuses">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BonusType" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Amount" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="MinDeposit" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="MaxBonus" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FinancialOperations">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="OperationType" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Amount" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="DateTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="GameHistory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="GameId" Type="int" Nullable="false" />
+          <Property Name="SessionId" Type="int" Nullable="false" />
+          <Property Name="Bet" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="Result" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="DateTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Games">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="GameSessions">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="GameId" Type="int" Nullable="false" />
+          <Property Name="StartTime" Type="datetime" Nullable="false" />
+          <Property Name="EndTime" Type="datetime" />
+          <Property Name="Bet" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="Result" Type="decimal" Precision="10" Scale="2" />
+        </EntityType>
+        <EntityType Name="Reports">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ReportType" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="UserId" Type="int" />
+          <Property Name="ReportData" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Rewards">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="RewardType" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Amount" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="DateTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Login" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Balance" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_FinancialOperations_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="FinancialOperations" Type="Self.FinancialOperations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FinancialOperations">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GameHistory_Games">
+          <End Role="Games" Type="Self.Games" Multiplicity="1" />
+          <End Role="GameHistory" Type="Self.GameHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Games">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="GameHistory">
+              <PropertyRef Name="GameId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GameHistory_GameSessions">
+          <End Role="GameSessions" Type="Self.GameSessions" Multiplicity="1" />
+          <End Role="GameHistory" Type="Self.GameHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GameSessions">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="GameHistory">
+              <PropertyRef Name="SessionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GameHistory_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="GameHistory" Type="Self.GameHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="GameHistory">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GameSessions_Games">
+          <End Role="Games" Type="Self.Games" Multiplicity="1" />
+          <End Role="GameSessions" Type="Self.GameSessions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Games">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="GameSessions">
+              <PropertyRef Name="GameId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GameSessions_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="GameSessions" Type="Self.GameSessions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="GameSessions">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reports_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Reports" Type="Self.Reports" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Reports">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Rewards_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Rewards" Type="Self.Rewards" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Rewards">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище CASINOModelContainer">
+          <EntitySet Name="Bonuses" EntityType="Self.Bonuses" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FinancialOperations" EntityType="Self.FinancialOperations" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GameHistory" EntityType="Self.GameHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Games" EntityType="Self.Games" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GameSessions" EntityType="Self.GameSessions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Reports" EntityType="Self.Reports" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Rewards" EntityType="Self.Rewards" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_FinancialOperations_Users" Association="Self.FK_FinancialOperations_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="FinancialOperations" EntitySet="FinancialOperations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GameHistory_Games" Association="Self.FK_GameHistory_Games">
+            <End Role="Games" EntitySet="Games" />
+            <End Role="GameHistory" EntitySet="GameHistory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GameHistory_GameSessions" Association="Self.FK_GameHistory_GameSessions">
+            <End Role="GameSessions" EntitySet="GameSessions" />
+            <End Role="GameHistory" EntitySet="GameHistory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GameHistory_Users" Association="Self.FK_GameHistory_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="GameHistory" EntitySet="GameHistory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GameSessions_Games" Association="Self.FK_GameSessions_Games">
+            <End Role="Games" EntitySet="Games" />
+            <End Role="GameSessions" EntitySet="GameSessions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GameSessions_Users" Association="Self.FK_GameSessions_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="GameSessions" EntitySet="GameSessions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reports_Users" Association="Self.FK_Reports_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Reports" EntitySet="Reports" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Rewards_Users" Association="Self.FK_Rewards_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Rewards" EntitySet="Rewards" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CASINOModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Bonuses">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BonusType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Amount" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="MinDeposit" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="MaxBonus" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FinancialOperations">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="OperationType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Amount" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="DateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_FinancialOperations_Users" FromRole="FinancialOperations" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="GameHistory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="GameId" Type="Int32" Nullable="false" />
+          <Property Name="SessionId" Type="Int32" Nullable="false" />
+          <Property Name="Bet" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="Result" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="DateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Games" Relationship="Self.FK_GameHistory_Games" FromRole="GameHistory" ToRole="Games" />
+          <NavigationProperty Name="GameSessions" Relationship="Self.FK_GameHistory_GameSessions" FromRole="GameHistory" ToRole="GameSessions" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_GameHistory_Users" FromRole="GameHistory" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Games">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="GameHistory" Relationship="Self.FK_GameHistory_Games" FromRole="Games" ToRole="GameHistory" />
+          <NavigationProperty Name="GameSessions" Relationship="Self.FK_GameSessions_Games" FromRole="Games" ToRole="GameSessions" />
+        </EntityType>
+        <EntityType Name="GameSessions">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="GameId" Type="Int32" Nullable="false" />
+          <Property Name="StartTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EndTime" Type="DateTime" Precision="3" />
+          <Property Name="Bet" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="Result" Type="Decimal" Precision="10" Scale="2" />
+          <NavigationProperty Name="GameHistory" Relationship="Self.FK_GameHistory_GameSessions" FromRole="GameSessions" ToRole="GameHistory" />
+          <NavigationProperty Name="Games" Relationship="Self.FK_GameSessions_Games" FromRole="GameSessions" ToRole="Games" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_GameSessions_Users" FromRole="GameSessions" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Reports">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ReportType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="ReportData" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_Reports_Users" FromRole="Reports" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Rewards">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="RewardType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Amount" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="DateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_Rewards_Users" FromRole="Rewards" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Login" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Balance" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
+          <NavigationProperty Name="FinancialOperations" Relationship="Self.FK_FinancialOperations_Users" FromRole="Users" ToRole="FinancialOperations" />
+          <NavigationProperty Name="GameHistory" Relationship="Self.FK_GameHistory_Users" FromRole="Users" ToRole="GameHistory" />
+          <NavigationProperty Name="GameSessions" Relationship="Self.FK_GameSessions_Users" FromRole="Users" ToRole="GameSessions" />
+          <NavigationProperty Name="Reports" Relationship="Self.FK_Reports_Users" FromRole="Users" ToRole="Reports" />
+          <NavigationProperty Name="Rewards" Relationship="Self.FK_Rewards_Users" FromRole="Users" ToRole="Rewards" />
+        </EntityType>
+        <Association Name="FK_FinancialOperations_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="FinancialOperations" Type="Self.FinancialOperations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FinancialOperations">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GameHistory_Games">
+          <End Role="Games" Type="Self.Games" Multiplicity="1" />
+          <End Role="GameHistory" Type="Self.GameHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Games">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="GameHistory">
+              <PropertyRef Name="GameId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GameHistory_GameSessions">
+          <End Role="GameSessions" Type="Self.GameSessions" Multiplicity="1" />
+          <End Role="GameHistory" Type="Self.GameHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GameSessions">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="GameHistory">
+              <PropertyRef Name="SessionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GameHistory_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="GameHistory" Type="Self.GameHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="GameHistory">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GameSessions_Games">
+          <End Role="Games" Type="Self.Games" Multiplicity="1" />
+          <End Role="GameSessions" Type="Self.GameSessions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Games">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="GameSessions">
+              <PropertyRef Name="GameId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GameSessions_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="GameSessions" Type="Self.GameSessions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="GameSessions">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reports_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Reports" Type="Self.Reports" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Reports">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Rewards_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Rewards" Type="Self.Rewards" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Rewards">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CASINOEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Bonuses" EntityType="Self.Bonuses" />
+          <EntitySet Name="FinancialOperations" EntityType="Self.FinancialOperations" />
+          <EntitySet Name="GameHistory" EntityType="Self.GameHistory" />
+          <EntitySet Name="Games" EntityType="Self.Games" />
+          <EntitySet Name="GameSessions" EntityType="Self.GameSessions" />
+          <EntitySet Name="Reports" EntityType="Self.Reports" />
+          <EntitySet Name="Rewards" EntityType="Self.Rewards" />
+          <EntitySet Name="Users" EntityType="Self.Users" />
+          <AssociationSet Name="FK_FinancialOperations_Users" Association="Self.FK_FinancialOperations_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="FinancialOperations" EntitySet="FinancialOperations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GameHistory_Games" Association="Self.FK_GameHistory_Games">
+            <End Role="Games" EntitySet="Games" />
+            <End Role="GameHistory" EntitySet="GameHistory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GameHistory_GameSessions" Association="Self.FK_GameHistory_GameSessions">
+            <End Role="GameSessions" EntitySet="GameSessions" />
+            <End Role="GameHistory" EntitySet="GameHistory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GameHistory_Users" Association="Self.FK_GameHistory_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="GameHistory" EntitySet="GameHistory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GameSessions_Games" Association="Self.FK_GameSessions_Games">
+            <End Role="Games" EntitySet="Games" />
+            <End Role="GameSessions" EntitySet="GameSessions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GameSessions_Users" Association="Self.FK_GameSessions_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="GameSessions" EntitySet="GameSessions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reports_Users" Association="Self.FK_Reports_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Reports" EntitySet="Reports" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Rewards_Users" Association="Self.FK_Rewards_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Rewards" EntitySet="Rewards" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище CASINOModelContainer" CdmEntityContainer="CASINOEntities">
+          <EntitySetMapping Name="Bonuses">
+            <EntityTypeMapping TypeName="CASINOModel.Bonuses">
+              <MappingFragment StoreEntitySet="Bonuses">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="BonusType" ColumnName="BonusType" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="MinDeposit" ColumnName="MinDeposit" />
+                <ScalarProperty Name="MaxBonus" ColumnName="MaxBonus" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FinancialOperations">
+            <EntityTypeMapping TypeName="CASINOModel.FinancialOperations">
+              <MappingFragment StoreEntitySet="FinancialOperations">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="OperationType" ColumnName="OperationType" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="DateTime" ColumnName="DateTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GameHistory">
+            <EntityTypeMapping TypeName="CASINOModel.GameHistory">
+              <MappingFragment StoreEntitySet="GameHistory">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="GameId" ColumnName="GameId" />
+                <ScalarProperty Name="SessionId" ColumnName="SessionId" />
+                <ScalarProperty Name="Bet" ColumnName="Bet" />
+                <ScalarProperty Name="Result" ColumnName="Result" />
+                <ScalarProperty Name="DateTime" ColumnName="DateTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Games">
+            <EntityTypeMapping TypeName="CASINOModel.Games">
+              <MappingFragment StoreEntitySet="Games">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GameSessions">
+            <EntityTypeMapping TypeName="CASINOModel.GameSessions">
+              <MappingFragment StoreEntitySet="GameSessions">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="GameId" ColumnName="GameId" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+                <ScalarProperty Name="Bet" ColumnName="Bet" />
+                <ScalarProperty Name="Result" ColumnName="Result" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Reports">
+            <EntityTypeMapping TypeName="CASINOModel.Reports">
+              <MappingFragment StoreEntitySet="Reports">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ReportType" ColumnName="ReportType" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ReportData" ColumnName="ReportData" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Rewards">
+            <EntityTypeMapping TypeName="CASINOModel.Rewards">
+              <MappingFragment StoreEntitySet="Rewards">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="RewardType" ColumnName="RewardType" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="DateTime" ColumnName="DateTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="CASINOModel.Users">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Login" ColumnName="Login" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Balance" ColumnName="Balance" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

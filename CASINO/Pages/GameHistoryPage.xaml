@@ -1,0 +1,86 @@
+﻿<Page
+    x:Class="CASINO.Pages.GameHistoryPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:conv="clr-namespace:CASINO.Classes"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:CASINO.Pages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    Title="GameHistoryPage"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    Background="White"
+    mc:Ignorable="d">
+
+
+    <Page.Resources>
+        <!--  Ресурс для конвертера  -->
+        <conv:ResultToTextConverter x:Key="ResultToTextConverter" />
+    </Page.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!--  Заголовок страницы  -->
+        <StackPanel Background="#3F51B5" Orientation="Vertical">
+            <ui:TextBlock
+                FontSize="24"
+                FontWeight="Bold"
+                Foreground="White"
+                Text="История игр" />
+        </StackPanel>
+        
+        
+
+        <!--  Список игр  -->
+        <Border
+            Grid.Row="1"
+            Margin="10"
+            Background="#FF84A7F3"
+            CornerRadius="10">
+            <StackPanel Margin="20">
+                <ui:TextBlock
+                    Margin="0,0,0,10"
+                    FontSize="20"
+                    FontWeight="Bold"
+                    Text="Ваши игры" />
+
+                <Button
+                    Content="Показать отчет"
+                    Width="150"
+                    Margin="0,0,0,10"
+                    Click="ShowReport_Click" />
+
+
+                <!--  DataGrid для отображения истории игр  -->
+                <DataGrid
+                    x:Name="GameHistoryDataGrid"
+                    AutoGenerateColumns="False"
+                    CanUserResizeColumns="False"
+                    HeadersVisibility="Column"
+                    IsReadOnly="True">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn
+                            Width="*"
+                            Binding="{Binding Bet}"
+                            Header="Ставка" />
+                        <DataGridTextColumn
+                            Width="*"
+                            Binding="{Binding Result, Converter={StaticResource ResultToTextConverter}}"
+                            Header="Результат" />
+                        <DataGridTextColumn
+                            Width="*"
+                            Binding="{Binding DateTime}"
+                            Header="Дата и время" />
+                    </DataGrid.Columns>
+                </DataGrid>
+                
+            </StackPanel>
+        </Border>
+    </Grid>
+
+</Page>

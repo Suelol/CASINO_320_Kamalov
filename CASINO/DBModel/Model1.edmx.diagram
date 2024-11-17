@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="4827d0d94bc444edb74c50accdff83a0" Name="Diagram1">
+        <EntityTypeShape EntityType="CASINOModel.Bonuses" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CASINOModel.FinancialOperations" Width="1.5" PointX="3" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CASINOModel.GameHistory" Width="1.5" PointX="3" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CASINOModel.Games" Width="1.5" PointX="3.75" PointY="2.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CASINOModel.GameSessions" Width="1.5" PointX="6" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CASINOModel.Reports" Width="1.5" PointX="3" PointY="15.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CASINOModel.Rewards" Width="1.5" PointX="3" PointY="18.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CASINOModel.Users" Width="1.5" PointX="0.75" PointY="7.75" IsExpanded="true" />
+        <AssociationConnector Association="CASINOModel.FK_FinancialOperations_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="CASINOModel.FK_GameHistory_Games" ManuallyRouted="false" />
+        <AssociationConnector Association="CASINOModel.FK_GameHistory_GameSessions" ManuallyRouted="false" />
+        <AssociationConnector Association="CASINOModel.FK_GameHistory_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="CASINOModel.FK_GameSessions_Games" ManuallyRouted="false" />
+        <AssociationConnector Association="CASINOModel.FK_GameSessions_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="CASINOModel.FK_Reports_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="CASINOModel.FK_Rewards_Users" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
